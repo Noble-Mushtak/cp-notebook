@@ -1,6 +1,6 @@
 /**
- * Author: someone on Codeforces
- * Date: 2017-03-14
+ * Author: Noble Mushtak
+ * Date: 2021-01-05
  * Source: folklore
  * Description: A short self-balancing tree. It acts as a
  *  sequential container with log-time splits/joins, and
@@ -10,58 +10,68 @@
  */
 #pragma once
 
-struct Node {
-	Node *l = 0, *r = 0;
-	int val, y, c = 1;
-	Node(int val) : val(val), y(rand()) {}
-	void recalc();
+#include <random> /** keep-include */
+struct node;
+struct treap { node *root; treap(node *r = nullptr) : root(r) {} };
+std::mt19937 irand(std::random_device{}()); //std::mt19937_64 for 64-bit priority
+struct node {
+    num pri;
+    num val, mn, mx, lz;
+    int sz;
+    treap left, right;
+    node() {}
+    node(num x) : pri(irand()), val(x), mn(x), mx(x), lz(0), sz(1), left(), right() { }
 };
-
-int cnt(Node* n) { return n ? n->c : 0; }
-void Node::recalc() { c = cnt(l) + cnt(r) + 1; }
-
-template<class F> void each(Node* n, F f) {
-	if (n) { each(n->l, f); f(n->val); each(n->r, f); }
+node* newNode(num val) { return new node(val); }
+num mn(treap t) { return t.root ? t.root->mn : 1e18; }
+num mx(treap t) { return t.root ? t.root->mx : -1e18; }
+int sz(treap t) { return t.root ? t.root->sz : 0; }
+void push(treap t) { //push should be O(1), MUST NOT recurse on left and right
+    if (!t.root) return;
+    num lz = t.root->lz;
+    t.root->val += lz, t.root->mn += lz, t.root->mx += lz;
+    if (t.root->left.root) t.root->left.root->lz += lz;
+    if (t.root->right.root) t.root->right.root->lz += lz;
+    t.root->lz = 0;
 }
-
-pair<Node*, Node*> split(Node* n, int k) {
-	if (!n) return {};
-	if (cnt(n->l) >= k) { // "n->val >= k" for lower_bound(k)
-		auto pa = split(n->l, k);
-		n->l = pa.second;
-		n->recalc();
-		return {pa.first, n};
-	} else {
-		auto pa = split(n->r, k - cnt(n->l) - 1); // and just "k"
-		n->r = pa.first;
-		n->recalc();
-		return {n, pa.second};
-	}
+void update(treap t) {
+    if (!t.root) return;
+    treap &left = t.root->left, &right = t.root->right;
+    push(left), push(right);
+    t.root->sz = sz(left)+sz(right)+1;
+    t.root->mn = std::min(t.root->val, std::min(mn(t.root->left), mn(t.root->right)));
+    t.root->mx = std::max(t.root->val, std::max(mx(t.root->left), mx(t.root->right)));
 }
-
-Node* merge(Node* l, Node* r) {
-	if (!l) return r;
-	if (!r) return l;
-	if (l->y > r->y) {
-		l->r = merge(l->r, r);
-		l->recalc();
-		return l;
-	} else {
-		r->l = merge(l, r->l);
-		r->recalc();
-		return r;
-	}
+treap merge(treap left, treap right) {
+    push(left), push(right);
+    treap n;
+    if (!left.root || !right.root) n = left.root ? left : right;
+    else if (left.root->pri > right.root->pri) left.root->right = merge(left.root->right, right), n = left;
+    else right.root->left = merge(left, right.root->left), n = right;
+    update(n);
+    return n;
 }
-
-Node* ins(Node* t, Node* n, int pos) {
-	auto pa = split(t, pos);
-	return merge(merge(pa.first, n), pa.second);
+//pos: pos elements in left treap
+//val: all elements in < val in left treap, all elements >= val in right treap
+std::pair<treap, treap> split(treap t, int pos) {
+    if (!t.root) return {{}, {}};
+    push(t); //Add update(t) if updates affect size of left/right nodes
+    treap &left = t.root->left, &right = t.root->right;
+    if (sz(left) < pos) { //if (t.root->val < val) {
+        auto pr = split(right, pos-sz(left)-1); //splitByVal(right, val);
+        t.root->right = pr.first;
+        update(t);
+        return {{t.root}, pr.second};
+    }
+    auto pr = split(left, pos); //splitByVal(left, val);
+    t.root->left = pr.second;
+    update(t);
+    return {pr.first, {t.root}};
 }
-
-// Example application: move the range [l, r) to index k
-void move(Node*& t, int l, int r, int k) {
-	Node *a, *b, *c;
-	tie(a,b) = split(t, l); tie(b,c) = split(b, r - l);
-	if (k <= l) t = merge(ins(a, b, k), c);
-	else t = merge(a, ins(c, b, k - r));
+int order(treap t, num val) {
+    if (!t.root) return 0;
+    push(t);
+    treap &left = t.root->left, &right = t.root->right;
+    if (t.root->val < val) return sz(left)+1+order(right, val);
+    return order(left, val);
 }

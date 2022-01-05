@@ -1,9 +1,24 @@
 # KACTL
 
-This repo hosts KACTL, [KTH](https://en.wikipedia.org/wiki/KTH_Royal_Institute_of_Technology)'s ICPC team reference document.
-It consists of 25 pages of copy-pasteable C++ code, for use in ICPC-style programming competitions.
+This repo hosts Noble Mushtak's reference document for competitive programming.
+It consists of 25 pages of copy-pasteable C++ code, for use in any programming competition.
+It is primarily based on [KACTL ACM-ICPC Notebook](https://github.com/kth-competitive-programming/kactl/),
+with some inspiration and information also found in the following resources:
+
+ * [CS 97SI: Introduction to Programming Contests](http://stanford.edu/class/cs97si/)
+ * [Eric Zhang's Algorithm and Data Structures Website](https://ekzlib.netlify.app/home)
+ * [Stanford's ACM-ICPC Notebook](https://github.com/jaehyunp/stanfordacm)
+ * [Stanford Notebook adapted for Indian Regionals](https://github.com/aayush9/ICPC-CodeBook)
+ * [IME's ACM-ICPC Notebook](https://github.com/imeplusplus/icpc-notebook/)
 
 See [kactl.pdf](./kactl.pdf) for the final, browsable version, and [content/](./content/) for raw source code.
+
+## TODO
+
+ * Fix `HLD.h` to work with my version of `LazySegmentTree.h`
+ * Add Tarjan's algorithm for finding bridges and articulation points
+ * Add centroid decomposition
+ * Consider adding 2d segment tree, disjoint sparse table
 
 ## Aspirations
 
