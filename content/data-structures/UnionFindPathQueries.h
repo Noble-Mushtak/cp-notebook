@@ -11,19 +11,15 @@
 
 using vertex = num;
 using weight = num;
-using num_vertices = int;
-const num_vertices MAXN = 2010;
+const int MAXN = 2010;
 const weight INF = 1e12+1;
-const num_vertices MAXPATH = MAXN;
+const int MAXPATH = MAXN;
 vertex path1Arr[MAXPATH], path2Arr[MAXPATH];
-num_vertices path1Length, path2Length;
+int p1Len, p2Len;
 struct dsu {
-    std::vector<vertex> parent;
-    std::vector<weight> parentInfo;
-    std::vector<num_vertices> size;
-    dsu() : parent(MAXN, 0), parentInfo(MAXN, 0), size(MAXN, 1) {
-        REPI(i, MAXN) parent[i] = i;
-    }
+    std::vector<vertex> parent, parentInfo;
+    std::vector<int> size;
+    dsu() : parent(MAXN, 0), parentInfo(MAXN, 0), size(MAXN, 1) { REPI(i, MAXN) parent[i] = i; }
     vertex find(vertex v) {
         while (parent[v] != v) v = parent[v];
         return v;
@@ -40,7 +36,7 @@ struct dsu {
         size[par1] += size[par2];
         return true;
     }
-    void pathToParent(vertex v, vertex* &path, num_vertices &len) {
+    void pathToParent(vertex v, vertex* &path, int &len) {
         len = 0;
         while (parent[v] != v) {
             --path, *path = v, ++len;
@@ -51,21 +47,16 @@ struct dsu {
     weight findMin(vertex v1, vertex v2) {
         vertex *path1 = path1Arr+MAXPATH;
         vertex *path2 = path2Arr+MAXPATH;
-        pathToParent(v1, path1, path1Length);
-        pathToParent(v2, path2, path2Length);
+        pathToParent(v1, path1, p1Len);
+        pathToParent(v2, path2, p2Len);
         if (path1[0] != path2[0]) return -1; //Change if necessary!
-        num_vertices idxInCommon = 0;
-        while ((idxInCommon < (num_vertices)std::min(path1Length, path2Length)) && (path1[idxInCommon] == path2[idxInCommon]))
-            ++idxInCommon;
-        --idxInCommon;        
+        int idx = 0;
+        while ((idx < min(p1Len, p2Len)) && (path1[idx] == path2[idx])) ++idx;
+        --idx;        
         //Query minimum of maximum -> Change std::min to std::max, INF to -INF
         weight ans = INF;
-        for (num_vertices j = path1Length-1; j > idxInCommon; --j) {
-            ans = std::min(ans, parentInfo[path1[j]]);
-        }
-        for (num_vertices j = idxInCommon+1; j < (num_vertices)path2Length; ++j) {
-            ans = std::min(ans, parentInfo[path2[j]]);
-        }
+        for (int j = p1Len-1; j > idx; --j) ans = std::min(ans, parentInfo[path1[j]]);
+        for (int j = idx+1; j < p2Len; ++j) ans = std::min(ans, parentInfo[path2[j]]);
         return ans;
     }
 };
