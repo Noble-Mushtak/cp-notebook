@@ -17,15 +17,15 @@ std::mt19937 irand(std::random_device{}()); //std::mt19937_64 for 64-bit priorit
 struct node {
     num pri;
     num val, mn, mx, lz;
-    int sz;
+    int sze;
     treap left, right;
     node() {}
-    node(num x) : pri(irand()), val(x), mn(x), mx(x), lz(0), sz(1), left(), right() { }
+    node(num x) : pri(irand()), val(x), mn(x), mx(x), lz(0), sze(1), left(), right() { }
 };
 node* newNode(num val) { return new node(val); }
 num mn(treap t) { return t.root ? t.root->mn : 1e18; }
 num mx(treap t) { return t.root ? t.root->mx : -1e18; }
-int sz(treap t) { return t.root ? t.root->sz : 0; }
+int sze(treap t) { return t.root ? t.root->sze : 0; }
 void push(treap t) { //push should be O(1), MUST NOT recurse on left and right
     if (!t.root) return;
     num lz = t.root->lz;
@@ -38,7 +38,7 @@ void update(treap t) {
     if (!t.root) return;
     treap &left = t.root->left, &right = t.root->right;
     push(left), push(right);
-    t.root->sz = sz(left)+sz(right)+1;
+    t.root->sze = sze(left)+sze(right)+1;
     t.root->mn = std::min(t.root->val, std::min(mn(t.root->left), mn(t.root->right)));
     t.root->mx = std::max(t.root->val, std::max(mx(t.root->left), mx(t.root->right)));
 }
@@ -57,8 +57,8 @@ std::pair<treap, treap> split(treap t, int pos) {
     if (!t.root) return {{}, {}};
     push(t); //Add update(t) if updates affect size of left/right nodes
     treap &left = t.root->left, &right = t.root->right;
-    if (sz(left) < pos) { //if (t.root->val < val) {
-        auto pr = split(right, pos-sz(left)-1); //splitByVal(right, val);
+    if (sze(left) < pos) { //if (t.root->val < val) {
+        auto pr = split(right, pos-sze(left)-1); //splitByVal(right, val);
         t.root->right = pr.first;
         update(t);
         return {{t.root}, pr.second};
@@ -72,6 +72,6 @@ int order(treap t, num val) {
     if (!t.root) return 0;
     push(t);
     treap &left = t.root->left, &right = t.root->right;
-    if (t.root->val < val) return sz(left)+1+order(right, val);
+    if (t.root->val < val) return sze(left)+1+order(right, val);
     return order(left, val);
 }
