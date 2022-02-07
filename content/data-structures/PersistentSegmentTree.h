@@ -1,6 +1,6 @@
 /**
  * Author: IME ICPC Notebook and Noble Mushtak
- * Date: 2021-01-05
+ * Date: 2022-01-05
  * License: CC0
  * Source: me
  * Description: Persistent segment tree with ability to add values to points, and compute sum of intervals.

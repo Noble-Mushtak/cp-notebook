@@ -1,6 +1,6 @@
 /**
  * Author: Noble Mushtak
- * Date: 2021-01-05
+ * Date: 2022-01-05
  * License: CC0
  * Source: me
  * Description: Union-find data structure with ability to find maximum of minimum edge weight along a path in a graph

@@ -1,6 +1,6 @@
 /**
  * Author: Noble Mushtak
- * Date: 2021-01-05
+ * Date: 2022-01-05
  * License: CC0
  * Source: me
  * Description: Segment tree with ability to add values of large intervals, and compute sum of intervals.
