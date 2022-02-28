@@ -15,7 +15,6 @@ See [kactl.pdf](./kactl.pdf) for the final, browsable version, and [content/](./
 
 ## TODO
 
- * Fix `HLD.h` to work with my version of `LazySegmentTree.h`
  * Add centroid decomposition
  * Consider adding 2d segment tree
 

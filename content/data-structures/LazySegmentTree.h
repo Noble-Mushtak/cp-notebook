@@ -15,9 +15,9 @@ using upd = int64_t;
 const value IDENT = 0; //Change as needed
 const upd NONE = 0;
 struct segtree {
-    value mergeValues(value val1, value val2) { return val1+val2; }
-    void updNode(value &curValue, num left, num right, upd newUpd) { curValue += (right-left+1)*newUpd; }
-    void mergeUpdates(upd &origUpd, upd newUpd) { origUpd += newUpd; }
+    static value mergeValues(value val1, value val2) { return val1+val2; }
+    static void updNode(value &curValue, num left, num right, upd newUpd) { curValue += (right-left+1)*newUpd; }
+    static void mergeUpdates(upd &origUpd, upd newUpd) { origUpd += newUpd; }
 
     num N;
     vector<value> nodes;
