@@ -13,11 +13,6 @@ with some inspiration and information also found in the following resources:
 
 See [kactl.pdf](./kactl.pdf) for the final, browsable version, and [content/](./content/) for raw source code.
 
-## TODO
-
- * Add centroid decomposition
- * Consider adding 2d segment tree
-
 ## Aspirations
 
 KACTL algorithms should be: useful, short, fast enough, well tested, and if relevant, readable and easy to modify.
