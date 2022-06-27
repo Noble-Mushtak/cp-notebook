@@ -1,5 +1,5 @@
 /**
- * Author: Noble Mushtaj
+ * Author: Noble Mushtak
  * Date: 2022-05-07
  * License: CC0
  * Source: folklore
