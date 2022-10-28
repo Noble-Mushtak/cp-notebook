@@ -12,10 +12,8 @@
 struct pset {
     pset *left, *right;
     num sze;
-
     pset() : left(nullptr), right(nullptr), sze(0) {}
 };
-
 pair<pset*,bool> insertPset(const pset *curPset, num newNum, num leftBnd=0, num rightBnd=250005) {
     num oldSz = 0;
     pset *newLeft = nullptr;
