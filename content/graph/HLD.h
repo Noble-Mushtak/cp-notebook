@@ -53,7 +53,7 @@ template <bool VALS_EDGES> struct HLD {
     void modifyPath(int u, int v, upd val) {
         process(u, v, [&](int l, int r) { tree.update(l, r - 1, val); });
     }
-    value queryPath(int u, int v) { // Modify depending on problem
+    value queryPath(int u, int v) {
         value res = IDENT;
         process(u, v, [&](int l, int r) {
             res = segtree::mergeValues(res, tree.query(l, r - 1));

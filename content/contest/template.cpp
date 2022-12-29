@@ -5,7 +5,7 @@
 
 using num = int64_t;
 using namespace std;
-#define rep(i, a, b) for(int i = a; i < (b); ++i)
+#define rep(i, a, b) for(num i = a; i < (b); ++i)
 #define REPI(t, n) for (num t = 0; t < n; ++t)
 #define all(x) begin(x), end(x)
 #define sz(x) (int)(x).size()
