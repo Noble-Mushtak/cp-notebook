@@ -12,11 +12,6 @@ using namespace std;
 using ll = long long;
 using pii = pair<int, int>;
 using vi = vector<int>;
-#ifdef TESTING
-#define DEBUG(...) __VA_ARGS__
-#else
-#define DEBUG(...)
-#endif
 
 int main() {
 	cin.tie(0)->sync_with_stdio(0);
