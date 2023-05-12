@@ -5,6 +5,17 @@
 	\kactlimport{IntervalCover.h}
 	\kactlimport{ConstantIntervals.h}
 
+\section{Job Scheduling}
+	\kactlimport{OptimalSchedule.h}
+	\kactlimport{JohnsonsRule.h}
+    \subsection{Livshits-Kladov}
+        Scheduling $n$ jobs, only one job can be processed at a time, each job takes $t_i$ time to process and has penalty of $f_i(t)$ for waiting $t$ seconds before starting the job
+        \begin{itemize}
+            \item $f_i(t)=c_i t+d_i$: Sort jobs in non-ascending order of $c_i/t_i$
+            \item $f_i(t)=c_i e^{\alpha\cdot t}$: Sort jobs in non-ascending order of $(1-e^{\alpha\cdot t_i})/c_i$
+            \item All $f_i$ are equal functions and monotone increasing: Sort jobs in non-descending order of $t_i$
+        \end{itemize}
+
 \section{Misc. algorithms}
 	\kactlimport{TernarySearch.h}
 	% \kactlimport{LIS.h}
